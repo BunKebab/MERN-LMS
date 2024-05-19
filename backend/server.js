@@ -14,6 +14,10 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
+app.use("/api/books", require("./routes/bookRoutes"))
+app.use("/api/users", require("./routes/userRoutes"))
+app.use("/api/auth", require("./routes/authRoutes"))
+
 //connecting to port
 app.listen(Port)
 console.log(`listening to port: ${Port}`)
