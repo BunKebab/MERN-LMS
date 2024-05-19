@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler")
 const Book = require("../models/bookModel")
 
+//create a book record (post)
 const createBook = asyncHandler(async (req, res) => {
     const {
         title,
@@ -25,6 +26,7 @@ const createBook = asyncHandler(async (req, res) => {
     res.status(200).json(book)
 })
 
+//fetches a book record (get:id)
 const getBook = asyncHandler(async (req, res) => {
     const book = await Book.findById(req.params.id)
 
@@ -36,6 +38,7 @@ const getBook = asyncHandler(async (req, res) => {
     res.status(200).json(book)
 })
 
+//fetches all book records (get)
 const getAllBooks = asyncHandler(async (req, res) => {
     const books = await Book.find()
 
@@ -47,6 +50,7 @@ const getAllBooks = asyncHandler(async (req, res) => {
     res.status(200).json(books)
 })
 
+//updates a book record (put:id)
 const updateBook = asyncHandler(async (req, res) => {
     const book = await Book.findById(req.params.id)
 
@@ -61,6 +65,7 @@ const updateBook = asyncHandler(async (req, res) => {
     res.status(200).json(updatedBook)
 })
 
+//deletes a book record (delete:id)
 const deleteBook = asyncHandler(async (req, res) => {
     const book = await Book.findById(req.params.id)
 

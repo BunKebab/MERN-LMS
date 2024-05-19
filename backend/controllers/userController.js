@@ -12,6 +12,8 @@ const generateRandomPassword = () => {
     return password
 }
 
+
+//creates a user entry (post)
 const registerUser = asyncHandler(async (req, res) => {
     const {
         name,
@@ -40,6 +42,7 @@ const registerUser = asyncHandler(async (req, res) => {
     res.status(200).json({user, generatedPassword: password})
 })
 
+//fetched a user entry (get:id)
 const getUser = asyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id)
 
@@ -51,6 +54,7 @@ const getUser = asyncHandler(async (req, res) => {
     res.status(200).json(user)
 })
 
+//fetched all user entries (get)
 const getAllUsers = asyncHandler(async (req, res) => {
     const users = await User.find()
 
@@ -62,6 +66,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
     res.status(200).json(users)
 })
 
+//upates a user's password (put:id)
 const updatePassword = asyncHandler(async (req, res) => {
     const {
         currentPassword,
@@ -90,6 +95,7 @@ const updatePassword = asyncHandler(async (req, res) => {
     res.status(200).json(updatedUser)
 })
 
+//deletes a user entry (delete: id)
 const removeUser = asyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id)
 
