@@ -31,4 +31,28 @@ const protect = asyncHandler(async(req, res, next) => {
     }
 })
 
-module.exports = protect
+//for admin specific routes
+const adminOnly = asyncHandler(async (req, res, next) => {
+    if (req.user && req.user.role === "Admin") {
+        next()
+    } else {
+        res.status(401)
+        throw new Error("access denied. Admin only")
+    }
+})
+
+//for user specific routes
+const memberOnly = asyncHandler(async (req, res, next) => {
+    if(req.user && req.user.role === "Member") {
+        next()
+    } else {
+        res.status(401)
+        throw new Error("access denies. Member only")
+    }
+})
+
+module.exports = {
+    protect,
+    adminOnly,
+    memberOnly
+}

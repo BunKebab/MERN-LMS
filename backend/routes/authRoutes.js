@@ -9,7 +9,9 @@ const {
 } = require("../controllers/authController")
 
 //route protection
-const protect = require("../middleware/authMiddleware")
+const {
+    protect
+} = require("../middleware/authMiddleware")
 
 router.post("/login", loginUser)
 router.post("/logout", protect, logoutUser)

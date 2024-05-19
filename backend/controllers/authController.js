@@ -60,7 +60,7 @@ const loginUser = asyncHandler(async (req, res) => {
     })
 })
 
-//logs out a user (post)(protected)
+//logs out a user (post)(protected)(to be implemented)
 const logoutUser = asyncHandler(async (req, res) => {
     res.json({message: "user logged out"})
 })

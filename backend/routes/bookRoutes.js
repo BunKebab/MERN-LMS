@@ -10,7 +10,13 @@ const {
     deleteBook
 } = require("../controllers/bookController")
 
-router.route("/").post(createBook).get(getAllBooks)
-router.route("/:id").get(getBook).put(updateBook).delete(deleteBook)
+//route protection
+const {
+    protect,
+    adminOnly
+} = require("../middleware/authMiddleware")
+
+router.route("/").post(protect, adminOnly, createBook).get(protect, getAllBooks)
+router.route("/:id").get(getBook).put(updateBook).delete(protect, adminOnly, deleteBook)
 
 module.exports = router
