@@ -17,6 +17,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use("/api/books", require("./routes/bookRoutes"))
 app.use("/api/users", require("./routes/userRoutes"))
 app.use("/api/auth", require("./routes/authRoutes"))
+app.use("/api/borrowings", require("./routes/borrowingRoutes"))
 
 //connecting to port
 app.listen(Port)
