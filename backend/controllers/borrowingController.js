@@ -95,7 +95,17 @@ const renewBorrowing = asyncHandler(async (req, res) => {
 
     const {newDeadline} = req.body
 
-    const renewedBorrowing = await Borrowing.findByIdAndUpdate(req.params.id, {deadline: newDeadline})
+    if (!newDeadline) {
+        res.status(400)
+        throw new Error("deadline not provided")
+    }
+
+    const renewedBorrowing = await Borrowing.findByIdAndUpdate(req.params.id, {
+        deadline: newDeadline,
+        renewed: true
+    }, {
+        new: true
+    })
 
     res.status(200).json(renewedBorrowing)
 })
@@ -119,7 +129,7 @@ const receiveBorrowing = asyncHandler(async (req, res) => {
 
     await borrowing.deleteOne()
 
-    const pastBorrowing = PastBorrowing.create({
+    await PastBorrowing.create({
         userId,
         bookId,
         issueDate,

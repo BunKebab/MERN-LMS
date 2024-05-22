@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken")
 const asyncHandler = require("express-async-handler")
 const User = require("../models/userModel")
 
-const protect = asyncHandler(async(req, res, next) => {
+const protect = asyncHandler(async (req, res, next) => {
     let token
 
     //confirming token format {Bearer Token}
@@ -43,7 +43,7 @@ const adminOnly = asyncHandler(async (req, res, next) => {
 
 //for user specific routes
 const memberOnly = asyncHandler(async (req, res, next) => {
-    if(req.user && req.user.role === "Member") {
+    if (req.user && req.user.role === "Member") {
         next()
     } else {
         res.status(401)
