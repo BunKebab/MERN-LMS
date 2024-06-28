@@ -1,6 +1,7 @@
 const express = require("express")
 const dotenv = require("dotenv").config()
 const router = express.Router()
+const cors = require("cors")
 const connect = require("./config/db")
 const Port = process.env.PORT
 
@@ -9,6 +10,9 @@ connect()
 
 //initializing app
 const app = express()
+
+//cross origin resource sharing
+app.use(cors())
 
 //middleware and apis
 app.use(express.json())
