@@ -29,7 +29,7 @@ const Login = () => {
     }
 
     if (isSuccess) {
-      toast.success("Logged in successfully");
+      toast.success(message);
     }
   }, [isError, isSuccess, navigate, message]);
 

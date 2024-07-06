@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 //import components
 import Logout from "../components/modals/Logout";
+import ChangePassword from "../components/modals/ChangePassword";
 
 const Options = () => {
   const navigate = useNavigate()
@@ -20,9 +21,9 @@ const Options = () => {
         <h2 className="text-2xl font-bold mb-4 text-center">Options</h2>
 
         <div className="mb-4">
-          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full mb-2">
-            Change Password
-          </button>
+        <div className="flex justify-center">
+            <ChangePassword />
+          </div>
           <div className="flex justify-center">
             <Logout />
           </div>
