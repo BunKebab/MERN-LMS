@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken")
+const bcrypt = require("bcryptjs")
 const asyncHandler = require('express-async-handler')
 const User = require("../models/userModel")
 
@@ -7,6 +8,35 @@ const generateToken = (id) => {
         expiresIn: "7d"
     })
 }
+
+//upates a user's password (put:id)
+const updatePassword = asyncHandler(async (req, res) => {
+    const {
+        currentPassword,
+        newPassword
+    } = req.body
+
+    const user = await User.findById(req.params.id)
+
+    if (!user) {
+        res.status(400)
+        throw new Error("user not found")
+    }
+
+    const isMatch = await user.comparePassword(currentPassword)
+
+    if (!isMatch) {
+        res.status(400)
+        throw new Error("incorrect current pasword")
+    }
+
+    const salt = await bcrypt.genSalt(10)
+    const hashedPassword = await bcrypt.hash(newPassword, salt)
+
+    const updatedUser = await User.findByIdAndUpdate(req.params.id, {password: hashedPassword})
+
+    res.status(200).json(updatedUser)
+})
 
 //fetches logged in user (get)(protected)
 const getMe = asyncHandler(async (req, res) => {
@@ -60,13 +90,8 @@ const loginUser = asyncHandler(async (req, res) => {
     })
 })
 
-//logs out a user (post)(protected)(to be implemented)
-const logoutUser = asyncHandler(async (req, res) => {
-    res.json({message: "user logged out"})
-})
-
 module.exports= {
     loginUser,
-    logoutUser,
+    updatePassword,
     getMe
 }

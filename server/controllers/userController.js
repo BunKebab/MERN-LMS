@@ -1,5 +1,4 @@
 const asyncHandler = require("express-async-handler")
-const bcrypt = require("bcryptjs")
 const User = require("../models/userModel")
 
 const generateRandomPassword = () => {
@@ -66,35 +65,6 @@ const getAllUsers = asyncHandler(async (req, res) => {
     res.status(200).json(users)
 })
 
-//upates a user's password (put:id)
-const updatePassword = asyncHandler(async (req, res) => {
-    const {
-        currentPassword,
-        newPassword
-    } = req.body
-
-    const user = await User.findById(req.params.id)
-
-    if (!user) {
-        res.status(400)
-        throw new Error("user not found")
-    }
-
-    const isMatch = await user.comparePassword(currentPassword)
-
-    if (!isMatch) {
-        res.status(400)
-        throw new Error("incorrect current pasword")
-    }
-
-    const salt = await bcrypt.genSalt(10)
-    const hashedPassword = await bcrypt.hash(newPassword, salt)
-
-    const updatedUser = await User.findByIdAndUpdate(req.params.id, {password: hashedPassword})
-
-    res.status(200).json(updatedUser)
-})
-
 //deletes a user entry (delete: id)
 const removeUser = asyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id)
@@ -112,6 +82,5 @@ module.exports = {
     registerUser,
     getUser,
     getAllUsers,
-    updatePassword,
     removeUser
 }
