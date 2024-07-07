@@ -1,13 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useSelector, useDispatch } from "react-redux";
-import { updatePassword } from "../../actions/authSlice";
+import { updatePassword, reset } from "../../actions/authSlice";
+import { toast } from "react-toastify";
+import Loader from "../Loader";
 
 const ChangePassword = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth.user);
-  const userId = user._id;
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+
+    if (isSuccess) {
+      toast.success(message);
+    }
+
+    if (isLoading) {
+      <Loader />;
+    }
+    
+    // Reset the state after displaying messages
+    return () => {
+      dispatch(reset());
+    };
+  }, [isError, isLoading, isSuccess, message, dispatch]);
+
   return (
     <>
       <button
@@ -37,12 +60,21 @@ const ChangePassword = () => {
                   .min(8, "Password must be at least 8 characters")
                   .required("New password is required"),
               })}
-              onSubmit={(values, { setSubmitting }) => {
-                // Handle form submission logic here (e.g., dispatch action)
-                console.log(values);
-                setSubmitting(false);
-                // Close modal after form submission
-                document.getElementById("change_password_modal").close();
+              onSubmit={async (values, { setSubmitting }) => {
+                try {
+                  await dispatch(
+                    updatePassword({
+                      userId: user.id,
+                      currentPassword: values.currentPassword,
+                      newPassword: values.newPassword,
+                    })
+                  ).unwrap();
+                  document.getElementById("change_password_modal").close();
+                } catch (error) {
+                  console.error("Failed to update password:", error);
+                } finally {
+                  setSubmitting(false);
+                }
               }}
             >
               {({ isSubmitting }) => (

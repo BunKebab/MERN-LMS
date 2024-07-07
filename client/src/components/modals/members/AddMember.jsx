@@ -2,57 +2,49 @@ import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
-import { editBook } from "../../../actions/bookSlice";
+import { addMember } from "../../../actions/memberSlice";
 
-const EditBook = ({ book }) => {
-  console.log(book)
+const AddMember = () => {
   const dispatch = useDispatch();
-
-  const { title, author, category, isbn, refId } = book;
-  const bookId = book._id
 
   // Validation schema using Yup
   const validationSchema = Yup.object().shape({
-    title: Yup.string().required("Title is required"),
-    author: Yup.string().required("Author is required"),
-    category: Yup.string().required("Category is required"),
-    isbn: Yup.string().required("isbn is required"),
-    refId: Yup.string().required("Reference ID is required"),
+    email: Yup.string().required("Email is required"),
+    name: Yup.string().required("Name is required"),
+    password: Yup.string().min(8, "Password must be at least 8 characters").required("Password is required"),
   });
 
   // Initial form values
   const initialValues = {
-    title,
-    author,
-    category,
-    isbn,
-    refId,
+    email: "",
+    name: "",
+    password: ""
   };
 
   // Form submission handler
-  const handleSubmit = (values) => {
-    // Dispatch action to create book
-    dispatch(editBook({bookId, bookData: values}));
+  const handleSubmit = (values, { resetForm }) => {
+    // Dispatch action to create member
+    dispatch(addMember(values));
     // Reset form after submission
     resetForm();
     // Close modal
-    document.getElementById(`edit_book_modal_${book._id}`).close();
+    document.getElementById("create_member_modal").close();
   };
 
   return (
     <div>
       {/* Button to open the modal */}
       <button
-        className="btn btn-warning"
-        onClick={() => document.getElementById(`edit_book_modal_${book._id}`).showModal()}
+        className="btn btn-primary"
+        onClick={() => document.getElementById("create_member_modal").showModal()}
       >
-        Edit Book
+        Add member
       </button>
 
       {/* Modal */}
-      <dialog id={`edit_book_modal_${book._id}`} className="modal">
+      <dialog id="create_member_modal" className="modal">
         <div className="modal-box">
-          <h3 className="font-bold text-lg">Edit Book</h3>
+          <h3 className="font-bold text-lg">Add New member</h3>
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
@@ -110,7 +102,7 @@ const EditBook = ({ book }) => {
                     <option value="">Select Category</option>
                     <option value="Novel">Novel</option>
                     <option value="Non-fiction">Non-fiction</option>
-                    <option value="Helping-book">Helping-book</option>
+                    <option value="Helping-member">Helping-member</option>
                   </Field>
                   <ErrorMessage
                     name="category"
@@ -157,17 +149,14 @@ const EditBook = ({ book }) => {
 
                 {/* Modal action buttons */}
                 <div className="modal-action">
-                  <button
-                    type="submit"
-                    className="btn btn-primary"
-                  >
-                    Save
+                  <button type="submit" className="btn btn-primary">
+                    Add member
                   </button>
                   <button
                     type="button"
                     className="btn ml-2"
                     onClick={() =>
-                      document.getElementById(`edit_book_modal_${book._id}`).close()
+                      document.getElementById("create_member_modal").close()
                     }
                   >
                     Cancel
@@ -182,4 +171,4 @@ const EditBook = ({ book }) => {
   );
 };
 
-export default EditBook;
+export default AddMember;

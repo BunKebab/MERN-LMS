@@ -24,34 +24,31 @@ const App = () => {
   const user = useSelector((state) => state.auth.user);
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <>
       <BrowserRouter>
         {/* Conditionally render Header or Navbar based on user authentication */}
         {user ? <Navbar /> : <Header />}
 
-        {/* Main content area */}
-        <main className="flex-1 overflow-y-auto">
-          {/* Routes setup */}
-          <Routes>
-            <Route path="/" element={<Login />} />
+        {/* Routes setup */}
+        <Routes>
+          <Route path="/" element={<Login />} />
 
-            {/* Admin routes */}
-            <Route path="/admin" element={<AdminHome />} />
-            <Route path="/admin/books" element={<AdminBooks />} />
-            <Route path="/admin/requests" element={<AdminRequests />} />
-            <Route path="/admin/borrowings" element={<AdminBorrowings />} />
-            <Route path="/admin/members" element={<AdminMembers />} />
+          {/* Admin routes */}
+          <Route path="/admin" element={<AdminHome />} />
+          <Route path="/admin/books" element={<AdminBooks />} />
+          <Route path="/admin/requests" element={<AdminRequests />} />
+          <Route path="/admin/borrowings" element={<AdminBorrowings />} />
+          <Route path="/admin/members" element={<AdminMembers />} />
 
-            {/* Member routes */}
-            <Route path="/member" element={<MemberHome />} />
-            <Route path="/member/books" element={<MemberBooks />} />
-          </Routes>
-        </main>
+          {/* Member routes */}
+          <Route path="/member" element={<MemberHome />} />
+          <Route path="/member/books" element={<MemberBooks />} />
+        </Routes>
       </BrowserRouter>
 
       {/* Toast notifications container */}
       <ToastContainer />
-    </div>
+    </>
   );
 };
 

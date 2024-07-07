@@ -5,6 +5,7 @@ import DeleteBook from "./DeleteBook";
 import EditBook from "./EditBook";
 
 const BookRow = ({ book }) => {
+  console.log(book)
   return (
     <>
       <tr
@@ -22,8 +23,8 @@ const BookRow = ({ book }) => {
           <p className="">ISBN: {book.isbn}</p>
           <p className="">Reference ID: {book.refId}</p>
           <div className="modal-action flex justify-end gap-2 mt-4">
-            <DeleteBook book={book} />
             <EditBook book={book} />
+            <DeleteBook book={book} />
             <button
               className="btn"
               onClick={() => document.getElementById(`book_modal_${book._id}`).close()}

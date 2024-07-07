@@ -36,10 +36,23 @@ export const loginUser = createAsyncThunk(
 //updates user password
 export const updatePassword = createAsyncThunk(
   "auth/update",
-  async (userId, currentPassword, newPassword, thunkAPI) => {
+  async ({ userId, currentPassword, newPassword }, thunkAPI) => {
     try {
-      const response = await axios.put(URL + userId, currentPassword, newPassword)
-      return response.data
+      const token = thunkAPI.getState().auth.user.token;
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const response = await axios.put(
+        `${URL}${userId}`,
+        { currentPassword, newPassword },
+        config
+      );
+
+      return response.data;
     } catch (error) {
       const message =
         (error.response &&
@@ -50,7 +63,7 @@ export const updatePassword = createAsyncThunk(
       return thunkAPI.rejectWithValue(message);
     }
   }
-)
+);
 
 const initialState = {
   user: user ? user : null,
@@ -81,7 +94,7 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.user = action.payload;
-        state.message = "logged in successfully"
+        state.message = "logged in successfully";
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -99,17 +112,20 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.user = action.payload;
+        state.message = "Password changed";
       })
       .addCase(updatePassword.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
-        state.message = action.payload ? action.payload : "Failed to change password";
+        state.message = action.payload
+          ? action.payload
+          : "Failed to change password";
       })
 
       //logout
       .addCase(logoutUser.fulfilled, (state, action) => {
         state.user = null;
-        state.message = "logged out successfuly"
+        state.message = "logged out successfuly";
       });
   },
 });
