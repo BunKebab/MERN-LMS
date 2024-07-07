@@ -1,5 +1,9 @@
 import React from "react";
 
+//import components
+import DeleteBook from "./DeleteBook";
+import EditBook from "./EditBook";
+
 const BookRow = ({ book }) => {
   return (
     <>
@@ -13,12 +17,17 @@ const BookRow = ({ book }) => {
       <dialog id={`book_modal_${book._id}`} className="modal">
         <div className="modal-box">
           <h3 className="font-bold text-lg">{book.title}</h3>
-          <p className="py-4">Author: {book.author}</p>
-          <p className="py-4">Category: {book.category}</p>
-          <p className="py-4">ISBN: {book.isbn}</p>
-          <p className="py-4">Reference ID: {book.refId}</p>
-          <div className="modal-action">
-            <button className="btn" onClick={() => document.getElementById(`book_modal_${book._id}`).close()}>
+          <p className="">Author: {book.author}</p>
+          <p className="">Category: {book.category}</p>
+          <p className="">ISBN: {book.isbn}</p>
+          <p className="">Reference ID: {book.refId}</p>
+          <div className="modal-action flex justify-end gap-2 mt-4">
+            <DeleteBook book={book} />
+            <EditBook book={book} />
+            <button
+              className="btn"
+              onClick={() => document.getElementById(`book_modal_${book._id}`).close()}
+            >
               Close
             </button>
           </div>

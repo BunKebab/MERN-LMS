@@ -2,8 +2,9 @@ import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
+import { addBook } from "../../../actions/bookSlice";
 
-const CreateBookForm = () => {
+const AddBook = () => {
   const dispatch = useDispatch();
 
   // Validation schema using Yup
@@ -11,7 +12,7 @@ const CreateBookForm = () => {
     title: Yup.string().required("Title is required"),
     author: Yup.string().required("Author is required"),
     category: Yup.string().required("Category is required"),
-    ISBN: Yup.string().required("ISBN is required"),
+    isbn: Yup.string().required("isbn is required"),
     refId: Yup.string().required("Reference ID is required"),
   });
 
@@ -20,13 +21,14 @@ const CreateBookForm = () => {
     title: "",
     author: "",
     category: "",
-    ISBN: "",
+    isbn: "",
     refId: "",
   };
 
   // Form submission handler
   const handleSubmit = (values, { resetForm }) => {
     // Dispatch action to create book
+    dispatch(addBook(values));
     // Reset form after submission
     resetForm();
     // Close modal
@@ -37,7 +39,7 @@ const CreateBookForm = () => {
     <div>
       {/* Button to open the modal */}
       <button
-        className="btn"
+        className="btn btn-primary"
         onClick={() => document.getElementById("create_book_modal").showModal()}
       >
         Add Book
@@ -46,7 +48,7 @@ const CreateBookForm = () => {
       {/* Modal */}
       <dialog id="create_book_modal" className="modal">
         <div className="modal-box">
-          <h3 className="font-bold text-lg">Create New Book</h3>
+          <h3 className="font-bold text-lg">Add New Book</h3>
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
@@ -113,19 +115,19 @@ const CreateBookForm = () => {
                   />
                 </div>
 
-                {/* ISBN */}
+                {/* isbn */}
                 <div className="py-2">
-                  <label htmlFor="ISBN" className="block font-medium">
+                  <label htmlFor="isbn" className="block font-medium">
                     ISBN
                   </label>
                   <Field
                     type="text"
-                    id="ISBN"
-                    name="ISBN"
+                    id="isbn"
+                    name="isbn"
                     className="input input-bordered w-full"
                   />
                   <ErrorMessage
-                    name="ISBN"
+                    name="isbn"
                     component="p"
                     className="text-red-500"
                   />
@@ -152,12 +154,14 @@ const CreateBookForm = () => {
                 {/* Modal action buttons */}
                 <div className="modal-action">
                   <button type="submit" className="btn btn-primary">
-                    Create Book
+                    Add Book
                   </button>
                   <button
                     type="button"
                     className="btn ml-2"
-                    onClick={() => document.getElementById("create_book_modal").close()}
+                    onClick={() =>
+                      document.getElementById("create_book_modal").close()
+                    }
                   >
                     Cancel
                   </button>

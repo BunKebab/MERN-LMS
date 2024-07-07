@@ -7,7 +7,7 @@ import { AiOutlineSearch } from "react-icons/ai";
 
 // Import components
 import Loader from "../../components/Loader";
-import BookRow from "../../components/modals/BookRow";
+import BookRow from "../../components/modals/books/BookRow";
 
 const MemberBooks = () => {
   const navigate = useNavigate();

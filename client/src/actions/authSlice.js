@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const URL = "http://localhost:5000/api/auth/";
+const URL = "/api/auth/";
 // Get user from localStorage
 const user = JSON.parse(localStorage.getItem("user"));
 
