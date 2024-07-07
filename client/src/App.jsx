@@ -6,16 +6,15 @@ import { useSelector } from "react-redux";
 
 // Import Pages
 import Login from "./pages/Login";
-import Options from "./pages/Options";
 // Import Admin Pages
 import AdminHome from "./pages/admin/AdminHome";
 import AdminBooks from "./pages/admin/AdminBooks";
 import AdminRequests from "./pages/admin/AdminRequests";
 import AdminBorrowings from "./pages/admin/AdminBorrowings";
-import AdminUsers from "./pages/admin/AdminUsers";
-// Import User Pages
-import UserHome from "./pages/user/UserHome";
-import UserBooks from "./pages/user/UserBooks";
+import AdminMembers from "./pages/admin/AdminMembers";
+// Import Member Pages
+import MemberHome from "./pages/member/MemberHome";
+import MemberBooks from "./pages/member/MemberBooks";
 
 // Import Components
 import Header from "./components/Header";
@@ -41,14 +40,11 @@ const App = () => {
             <Route path="/admin/books" element={<AdminBooks />} />
             <Route path="/admin/requests" element={<AdminRequests />} />
             <Route path="/admin/borrowings" element={<AdminBorrowings />} />
-            <Route path="/admin/users" element={<AdminUsers />} />
+            <Route path="/admin/members" element={<AdminMembers />} />
 
-            {/* User routes */}
-            <Route path="/user" element={<UserHome />} />
-            <Route path="/user/books" element={<UserBooks />} />
-
-            {/* Options route */}
-            <Route path="/options" element={<Options />} />
+            {/* Member routes */}
+            <Route path="/member" element={<MemberHome />} />
+            <Route path="/member/books" element={<MemberBooks />} />
           </Routes>
         </main>
       </BrowserRouter>

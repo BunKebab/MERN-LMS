@@ -10,7 +10,7 @@ const Logout = () => {
   return (
     <>
       <button
-        className="btn btn-error"
+        className="btn btn-error w-full mt-5"
         onClick={() => document.getElementById("logout_modal").showModal()}
       >
         Logout

@@ -17,11 +17,15 @@ const Login = () => {
     (state) => state.auth
   );
 
-  if (user && user.role === "Admin") {
-    navigate("/admin/");
-  } else {
-    navigate("/user/");
-  }
+  useEffect(() => {
+    if (user) {
+      if (user.role === "Admin") {
+        navigate("/admin/");
+      } else {
+        navigate("/member/");
+      }
+    }
+  }, [user, navigate]);
 
   useEffect(() => {
     if (isError) {
@@ -31,12 +35,12 @@ const Login = () => {
     if (isSuccess) {
       toast.success(message);
     }
-  }, [isError, isSuccess, navigate, message]);
+  }, [isError, isSuccess, message]);
 
   const validationSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email is required"),
     password: Yup.string()
-      .min(6, "Password must be at least 6 characters")
+      .min(8, "Password must be at least 8 characters")
       .required("Password is required"),
   });
 
@@ -56,7 +60,7 @@ const Login = () => {
         <Loader></Loader>
       ) : (
         <>
-          <div className="p-8 rounded-lg bg-white shadow-lg w-full max-w-md">
+          <div className="p-8 rounded-lg bg-base-100 shadow-lg w-full max-w-md">
             <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
             <Formik
               initialValues={initialValues}

@@ -17,6 +17,6 @@ const {
 } = require("../middleware/authMiddleware")
 
 router.route("/").post(protect, adminOnly, createBook).get(protect, getAllBooks)
-router.route("/:id").get(getBook).put(updateBook).delete(protect, adminOnly, deleteBook)
+router.route("/:id").get(getBook).put(protect, adminOnly, updateBook).delete(protect, adminOnly, deleteBook)
 
 module.exports = router

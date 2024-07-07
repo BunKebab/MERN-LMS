@@ -109,7 +109,6 @@ const authSlice = createSlice({
       //logout
       .addCase(logoutUser.fulfilled, (state, action) => {
         state.user = null;
-        isSuccess = false;
         state.message = "logged out successfuly"
       });
   },

@@ -11,7 +11,7 @@ const ChangePassword = () => {
   return (
     <>
       <button
-        className="btn btn-warning"
+        className="btn btn-warning w-full mt-5"
         onClick={() =>
           document.getElementById("change_password_modal").showModal()
         }

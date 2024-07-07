@@ -2,8 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
+//import components
+import Options from "./modals/Options";
+
 const Navbar = () => {
-  const user = useSelector((state) => state.auth.user)
+  const user = useSelector((state) => state.auth.user);
 
   return (
     <div className="navbar bg-base-100 fixed top-0">
@@ -29,74 +32,76 @@ const Navbar = () => {
             tabIndex={0}
             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
           >
-            <li>
-              <Link>Item 1</Link>
-            </li>
-            <li>
-              <Link>Parent</Link>
-              <ul className="p-2">
+            {user && user.role === "Admin" ? (
+              <>
                 <li>
-                  <Link>Submenu 1</Link>
+                  <Link to="/admin/books">Books</Link>
                 </li>
                 <li>
-                  <Link>Submenu 2</Link>
+                  <Link>Borrowings</Link>
+                  <ul className="p-2">
+                    <li>
+                      <Link to="/admin/borrowings">All</Link>
+                    </li>
+                    <li>
+                      <Link to="/admin/requests">Requests</Link>
+                    </li>
+                  </ul>
                 </li>
-              </ul>
-            </li>
-            <li>
-              <Link>Item 3</Link>
-            </li>
+                <li>
+                  <Link to="/admin/members">Members</Link>
+                </li>
+              </>
+            ) : (
+              <li>
+                <Link to="/member/books">Books</Link>
+              </li>
+            )}
           </ul>
         </div>
-        {
-          user.role === "Admin"? (
-            <Link to="/admin/" className="btn btn-ghost text-xl">Library Managment System</Link>
-          ): (
-            <Link to="/user/" className="btn btn-ghost text-xl">Library Managment System</Link>
-          )
-        }
+        {user.role === "Admin" ? (
+          <Link to="/admin/" className="btn btn-ghost text-xl">
+            Library Managment System
+          </Link>
+        ) : (
+          <Link to="/member/" className="btn btn-ghost text-xl">
+            Library Managment System
+          </Link>
+        )}
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
-          <li>
-            <Link>Item 1</Link>
-          </li>
-          <li>
-            <details>
-              <summary>Parent</summary>
-              <ul className="p-2">
-                <li>
-                  <Link>Submenu 1</Link>
-                </li>
-                <li>
-                  <Link>Submenu 2</Link>
-                </li>
-              </ul>
-            </details>
-          </li>
-          <li>
-            <Link>Item 3</Link>
-          </li>
+          {user && user.role === "Admin" ? (
+            <>
+              <li>
+                <Link to="/admin/books">Books</Link>
+              </li>
+              <li>
+                <details>
+                  <summary>Borrowings</summary>
+                  <ul className="p-2">
+                    <li>
+                      <Link to="/admin/borrowings">All</Link>
+                    </li>
+                    <li>
+                      <Link to="/admin/requests">Requests</Link>
+                    </li>
+                  </ul>
+                </details>
+              </li>
+              <li>
+                <Link to="/admin/members">Members</Link>
+              </li>
+            </>
+          ) : (
+            <li>
+              <Link to="/member/books">Books</Link>
+            </li>
+          )}
         </ul>
       </div>
       <div className="navbar-end">
-        <Link to="/options">
-          <button className="btn btn-square btn-ghost">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              className="inline-block h-5 w-5 stroke-current"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
-              ></path>
-            </svg>
-          </button>
-        </Link>
+        <Options />
       </div>
     </div>
   );
