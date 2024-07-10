@@ -51,97 +51,59 @@ const AddMember = () => {
             onSubmit={handleSubmit}
           >
             {({ errors, touched }) => (
-              <Form>
-                {/* Title */}
+              <Form autoComplete="off">
+                {/* Email */}
                 <div className="py-2">
-                  <label htmlFor="title" className="block font-medium">
-                    Title
+                  <label htmlFor="email" className="block font-medium">
+                    Email
                   </label>
                   <Field
                     type="text"
-                    id="title"
-                    name="title"
+                    id="email"
+                    name="email"
                     className="input input-bordered w-full"
+                    autoComplete="off"
                   />
                   <ErrorMessage
-                    name="title"
+                    name="email"
                     component="p"
                     className="text-red-500"
                   />
                 </div>
 
-                {/* Author */}
+                {/* Name */}
                 <div className="py-2">
-                  <label htmlFor="author" className="block font-medium">
-                    Author
+                  <label htmlFor="name" className="block font-medium">
+                    Name
                   </label>
                   <Field
                     type="text"
-                    id="author"
-                    name="author"
+                    id="name"
+                    name="name"
                     className="input input-bordered w-full"
+                    autoComplete="off"
                   />
                   <ErrorMessage
-                    name="author"
+                    name="name"
                     component="p"
                     className="text-red-500"
                   />
                 </div>
 
-                {/* Category */}
+                {/* password */}
                 <div className="py-2">
-                  <label htmlFor="category" className="block font-medium">
-                    Category
+                  <label htmlFor="password" className="block font-medium">
+                    Password
                   </label>
                   <Field
-                    as="select"
-                    id="category"
-                    name="category"
+                    type="password"
+                    id="password"
+                    name="password"
                     className="input input-bordered w-full"
-                  >
-                    <option value="">Select Category</option>
-                    <option value="Novel">Novel</option>
-                    <option value="Non-fiction">Non-fiction</option>
-                    <option value="Helping-member">Helping-member</option>
-                  </Field>
-                  <ErrorMessage
-                    name="category"
-                    component="p"
-                    className="text-red-500"
-                  />
-                </div>
-
-                {/* isbn */}
-                <div className="py-2">
-                  <label htmlFor="isbn" className="block font-medium">
-                    ISBN
-                  </label>
-                  <Field
-                    type="text"
-                    id="isbn"
-                    name="isbn"
-                    className="input input-bordered w-full"
+                    autoComplete="new-password"
                   />
                   <ErrorMessage
-                    name="isbn"
-                    component="p"
-                    className="text-red-500"
-                  />
-                </div>
-
-                {/* Reference ID */}
-                <div className="py-2">
-                  <label htmlFor="refId" className="block font-medium">
-                    Reference ID
-                  </label>
-                  <Field
-                    type="text"
-                    id="refId"
-                    name="refId"
-                    className="input input-bordered w-full"
-                  />
-                  <ErrorMessage
-                    name="refId"
+                    name="password"
                     component="p"
                     className="text-red-500"
                   />

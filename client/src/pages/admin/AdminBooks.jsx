@@ -41,7 +41,7 @@ const AdminBooks = () => {
     if (isSuccess && message) {
       toast.success(message);
     }
-  }, [isError, isSuccess, message]);
+  }, [isError, isSuccess, message, dispatch]);
 
   const filteredBooks = books.filter((book) =>
     book.title.toLowerCase().includes(searchTerm.toLowerCase())

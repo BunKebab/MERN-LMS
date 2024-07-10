@@ -1,5 +1,8 @@
 import React from "react";
 
+//import components
+import DeleteMember from "./RemoveMember";
+
 const MemberRow = ({ member }) => {
   return (
     <>
@@ -17,6 +20,7 @@ const MemberRow = ({ member }) => {
           <h3 className="font-bold text-lg">{member.name}</h3>
           <p className="">Email: {member.email}</p>
           <div className="modal-action flex justify-end gap-2 mt-4">
+            <DeleteMember member={member}/>
             <button
               className="btn"
               onClick={() =>
