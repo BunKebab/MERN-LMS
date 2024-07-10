@@ -88,21 +88,21 @@ export const deleteMember = createAsyncThunk(
 );
 
 const initialState = {
-    isLoading: false,
-    isError: false,
-    isSuccess: false,
-    members: [],
-    message: ''
-}
+  isLoading: false,
+  isError: false,
+  isSuccess: false,
+  members: [],
+  message: "",
+};
 
 const memberSlice = createSlice({
-    name: "memberSlice",
-    initialState,
-    reducers: {
-        reset: (state) => initialState
-    },
-    extraReducers: (builder) => {
-        builder
+  name: "memberSlice",
+  initialState,
+  reducers: {
+    reset: (state) => initialState,
+  },
+  extraReducers: (builder) => {
+    builder
       //get all members
       .addCase(getMembers.pending, (state) => {
         state.isLoading = true;
@@ -126,7 +126,7 @@ const memberSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.members.push(action.payload);
-        state.message = "Member added successfully"
+        state.message = "Member added successfully";
       })
       .addCase(addMember.rejected, (state, action) => {
         state.isLoading = false;
@@ -136,13 +136,13 @@ const memberSlice = createSlice({
 
       //delete Member
       .addCase(deleteMember.fulfilled, (state, action) => {
-        state.Members = state.Members.filter(
-          (Member) => Member._id !== action.payload.id
+        state.members = state.members.filter(
+          (member) => member._id !== action.payload.id
         );
-        state.message = "Member removed from library records"
+        state.message = "Member removed from library records";
       });
-    }
-})
+  },
+});
 
-export const {reset} = memberSlice.actions
-export default memberSlice.reducer
+export const { reset } = memberSlice.actions;
+export default memberSlice.reducer;

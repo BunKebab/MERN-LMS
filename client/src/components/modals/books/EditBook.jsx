@@ -5,7 +5,6 @@ import { useDispatch } from "react-redux";
 import { editBook } from "../../../actions/bookSlice";
 
 const EditBook = ({ book }) => {
-  console.log(book)
   const dispatch = useDispatch();
 
   const { title, author, category, isbn, refId } = book;

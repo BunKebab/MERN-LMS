@@ -5,7 +5,6 @@ import DeleteBook from "./DeleteBook";
 import EditBook from "./EditBook";
 
 const BookRow = ({ book }) => {
-  console.log(book)
   return (
     <>
       <tr

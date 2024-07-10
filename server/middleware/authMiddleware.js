@@ -41,13 +41,13 @@ const adminOnly = asyncHandler(async (req, res, next) => {
     }
 })
 
-//for user specific routes
+//for member specific routes
 const memberOnly = asyncHandler(async (req, res, next) => {
     if (req.user && req.user.role === "Member") {
         next()
     } else {
         res.status(401)
-        throw new Error("access denies. Member only")
+        throw new Error("access denied. Member only")
     }
 })
 

@@ -11,6 +11,16 @@ const borrowingSchema = mongoose.Schema({
         ref: "Book",
         required: true
     },
+    email: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    refId: {
+        type: String,
+        required: true,
+        unique: true
+    },
     issueDate: {
         type: Date,
         required: true
