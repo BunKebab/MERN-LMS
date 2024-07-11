@@ -3,6 +3,34 @@ import axios from "axios";
 
 const URL = "/api/borrowings/";
 
+//gets logged in member's borrowing
+export const getUserBorrowing = createAsyncThunk(
+  "borrowing/getOne",
+  async (memberId, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const response = await axios.get(`${URL}${memberId}`, config);
+
+      return response.data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 //get borrowing entries
 export const getBorrowings = createAsyncThunk(
   "borrowings/get",
@@ -62,9 +90,9 @@ export const createBorrowing = createAsyncThunk(
 //renews a borrowing
 export const renewBorrowing = createAsyncThunk(
   "borrowings/renew",
-  async ({borrowingId, newDeadline}, thunkAPI) => {
+  async ({ borrowingId, newDeadline }, thunkAPI) => {
     try {
-        console.log(newDeadline)
+      console.log(newDeadline);
       const token = thunkAPI.getState().auth.user.token;
 
       const config = {
@@ -75,11 +103,11 @@ export const renewBorrowing = createAsyncThunk(
 
       const response = await axios.put(
         `${URL}${borrowingId}`,
-        {newDeadline},
+        { newDeadline },
         config
       );
 
-      return response.data
+      return response.data;
     } catch (error) {
       const message =
         (error.response &&
@@ -136,6 +164,21 @@ const borrowingSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      //get user's borrowing
+      .addCase(getUserBorrowing.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getUserBorrowing.fulfilled, (state, action) => {
+        (state.isLoading = false),
+          (state.isSuccess = true),
+          (state.borrowings = action.payload);
+      })
+      .addCase(getUserBorrowing.rejected, (state, action) => {
+        state.isError = true;
+        state.isLoading = false;
+        state.message = action.payload;
+      })
+
       //get all borrowings
       .addCase(getBorrowings.pending, (state) => {
         state.isLoading = true;
