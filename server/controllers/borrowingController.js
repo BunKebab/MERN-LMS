@@ -67,9 +67,9 @@ const createBorrowing = asyncHandler(async (req, res) => {
   res.status(200).json(borrowing);
 });
 
-//fetches a borrowing record (get:id)(protected)
+//fetches a user's borrowing record (get:id)(protected)
 const getBorrowing = asyncHandler(async (req, res) => {
-  const borrowing = await Borrowing.findById(req.params.id);
+  const borrowing = await Borrowing.findOne({userId: req.params.id});
 
   if (!borrowing) {
     res.status(400);

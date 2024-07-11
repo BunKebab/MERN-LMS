@@ -14,12 +14,10 @@ const pastBorrowingSchema = mongoose.Schema({
     email: {
         type: String,
         required: true,
-        unique: true
     },
     refId: {
         type: String,
         required: true,
-        unique: true
     },
     issueDate: {
         type: Date,

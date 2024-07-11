@@ -20,7 +20,7 @@ const {
 router.post("/",protect, memberOnly, makeRequest)
 router.get("/",protect, adminOnly, getAllRequests)
 router.get("/:id",protect, adminOnly, getRequest)
-router.put("/:id",protect, adminOnly, approveRequest)
-router.delete("/:id",protect, adminOnly, denyRequest)
+router.put("/:id/approve",protect, adminOnly, approveRequest)
+router.delete("/:id/deny",protect, adminOnly, denyRequest)
 
 module.exports = router
