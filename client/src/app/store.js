@@ -6,6 +6,7 @@ import bookSlice from "../actions/bookSlice";
 import memberSlice from "../actions/memberSlice";
 import borrowingSlice from "../actions/borrowingSlice";
 import requestSlice from "../actions/requestSlice";
+import pastBorrowingSlice from "../actions/pastBorrowingSlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,5 +15,6 @@ export const store = configureStore({
     members: memberSlice,
     borrowings: borrowingSlice,
     requests: requestSlice,
+    pastBorrowings: pastBorrowingSlice
   },
 });

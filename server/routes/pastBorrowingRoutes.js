@@ -1,11 +1,11 @@
 const express = require("express")
 const router = express.Router()
-const {getPastBorrowings} = require("../controllers/pastBorrowingController")
+const {getPastBorrowingsByEmail} = require("../controllers/pastBorrowingController")
 //route protection
 const {
     protect,
 } = require("../middleware/authMiddleware")
 
-router.route("/:id").get(protect, getPastBorrowings)
+router.route("/:email").get(protect, getPastBorrowingsByEmail)
 
 module.exports = router

@@ -1,20 +1,20 @@
-const asyncHandler = require("express-async-handler")
-const PastBorrowing = require("../models/pastBorrowingModel")
+const asyncHandler = require("express-async-handler");
+const PastBorrowing = require("../models/pastBorrowingModel");
 
-//gets all past borrowings of a user
-const getPastBorrowings = asyncHandler(async (req, res) => {
-    const userId = req.params.id
+// Gets all past borrowings of a member by email
+const getPastBorrowingsByEmail = asyncHandler(async (req, res) => {
+  const email = req.params.email;
 
-    const pastBorrowings = await PastBorrowing.find({userId: userId})
+  const pastBorrowings = await PastBorrowing.find({ email: email });
 
-    if (!pastBorrowings) {
-        res.status(400)
-        throw new Error("past borrowings not found")
-    }
+  if (!pastBorrowings) {
+    res.status(404);
+    throw new Error("Past borrowings not found");
+  }
 
-    res.status(200).json(pastBorrowings)
-})
+  res.status(200).json(pastBorrowings);
+});
 
 module.exports = {
-    getPastBorrowings
-}
+  getPastBorrowingsByEmail,
+};
