@@ -78,7 +78,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
     if (!passMatch) {
         res.status(400)
-        throw new Error("incorrect pasword")
+        throw new Error("incorrect password")
     }
 
     res.status(200).json({
