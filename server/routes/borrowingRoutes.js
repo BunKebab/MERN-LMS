@@ -4,7 +4,6 @@ const router = express.Router()
 //controllers
 const {
     createBorrowing,
-    getBorrowing,
     getAllBorrowings,
     renewBorrowing,
     receiveBorrowing
@@ -17,6 +16,6 @@ const {
 } = require("../middleware/authMiddleware")
 
 router.route("/").post(protect, adminOnly, createBorrowing).get(protect, adminOnly, getAllBorrowings)
-router.route("/:id").get(protect, getBorrowing).put(protect, adminOnly, renewBorrowing).delete(protect, adminOnly, receiveBorrowing)
+router.route("/:id").put(protect, adminOnly, renewBorrowing).delete(protect, adminOnly, receiveBorrowing)
 
 module.exports = router

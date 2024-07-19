@@ -1,6 +1,5 @@
 const asyncHandler = require("express-async-handler");
 const Borrowing = require("../models/borrowingModel");
-const PastBorrowing = require("../models/pastBorrowingModel");
 const Book = require("../models/bookModel");
 const User = require("../models/userModel");
 
@@ -26,142 +25,136 @@ const calculateFine = async (borrowing) => {
 
 //creates a borrowing record (post)(protected)
 const createBorrowing = asyncHandler(async (req, res) => {
-  const { email, refId, issueDate, deadline } = req.body;
+  try {
+    const { email, refId, issueDate, deadline } = req.body;
 
-  if (!email || !refId || !issueDate || !deadline) {
-    res.status(400);
-    throw new Error("fields missing");
+    if (!email || !refId || !issueDate || !deadline) {
+      res.status(400).json({ message: "fields missing" });
+      throw new Error();
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      res.status(400).json({ message: "user not found" });
+      throw new Error();
+    }
+    const userId = user._id;
+
+    const book = await Book.findOne({ refId });
+    if (!book) {
+      res.status(400).json({ message: "book not found" });
+      throw new Error();
+    }
+    const bookId = book._id;
+
+    const checkUser = await Borrowing.findOne({ userId });
+    const checkBook = await Borrowing.findOne({ bookId });
+
+    if (checkUser || checkBook) {
+      res.status(400).json({
+        message: "cannot create borrowing, user or book already present",
+      });
+      throw new Error();
+    }
+
+    const borrowing = await Borrowing.create({
+      userId,
+      bookId,
+      email,
+      refId,
+      issueDate,
+      deadline,
+    });
+
+    res.status(200).json(borrowing);
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong, try again" });
+    throw error;
   }
-
-  const user = await User.findOne({ email });
-  if (!user) {
-    res.status(400);
-    throw new Error("user not found");
-  }
-  const userId = user._id;
-
-  const book = await Book.findOne({ refId });
-  if (!book) {
-    res.status(400);
-    throw new Error("book not found");
-  }
-  const bookId = book._id;
-
-  const checkUser = await Borrowing.findOne({ userId });
-  const checkBook = await Borrowing.findOne({ bookId });
-
-  if (checkUser || checkBook) {
-    res.status(400);
-    throw new Error("cannot create borrowing, user or book already present");
-  }
-
-  const borrowing = await Borrowing.create({
-    userId,
-    bookId,
-    email,
-    refId,
-    issueDate,
-    deadline,
-  });
-
-  res.status(200).json(borrowing);
-});
-
-//fetches a user's borrowing record (get:id)(protected)
-const getBorrowing = asyncHandler(async (req, res) => {
-  const borrowing = await Borrowing.findOne({userId: req.params.id});
-
-  if (!borrowing) {
-    res.status(400);
-    throw new Error("borrowing not found");
-  }
-
-  await calculateFine(borrowing);
-
-  res.status(200).json(borrowing);
 });
 
 //gets all borrowing records(get)(protected)
 const getAllBorrowings = asyncHandler(async (req, res) => {
-  const borrowings = await Borrowing.find();
+  try {
+    const borrowings = await Borrowing.find();
 
-  if (!borrowings) {
-    res.status(400);
-    throw new Error("no borrowings found");
+    if (!borrowings) {
+      res.status(400).json({ message: "no borrowings found" });
+      throw new Error();
+    }
+
+    for (const borrowing of borrowings) {
+      await calculateFine(borrowing);
+    }
+
+    res.status(200).json(borrowings);
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong, try again" });
+    throw error;
   }
-
-  for (const borrowing of borrowings) {
-    await calculateFine(borrowing);
-  }
-
-  res.status(200).json(borrowings);
 });
 
 //renews a borrowing (put:id)(protected)
 const renewBorrowing = asyncHandler(async (req, res) => {
-  const borrowing = await Borrowing.findById(req.params.id);
+  try {
+    const borrowing = await Borrowing.findById(req.params.id);
 
-  if (!borrowing) {
-    res.status(400);
-    throw new Error("borrowing not found");
-  }
-
-  if (borrowing.renewed) {
-    res.status(400);
-    throw new Error("book already renewed");
-  }
-
-  const { newDeadline } = req.body;
-
-  if (!newDeadline) {
-    res.status(400);
-    throw new Error("deadline not provided");
-  }
-
-  const renewedBorrowing = await Borrowing.findByIdAndUpdate(
-    req.params.id,
-    {
-      deadline: newDeadline,
-      renewed: true,
-    },
-    {
-      new: true,
+    if (!borrowing) {
+      res.status(400).json({ message: "borrowing not found" });
+      throw new Error();
     }
-  );
 
-  res.status(200).json(renewedBorrowing);
+    if (borrowing.renewed) {
+      res.status(400).json({ message: "book already renewed" });
+      throw new Error();
+    }
+
+    const { newDeadline } = req.body;
+
+    if (!newDeadline) {
+      res.status(400).json({ message: "deadline not provided" });
+      throw new Error();
+    }
+
+    const renewedBorrowing = await Borrowing.findByIdAndUpdate(
+      req.params.id,
+      {
+        deadline: newDeadline,
+        renewed: true,
+      },
+      {
+        new: true,
+      }
+    );
+
+    res.status(200).json(renewedBorrowing);
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong, try again" });
+    throw error;
+  }
 });
 
 //receives a borrowing (delete:id)(protected)
 const receiveBorrowing = asyncHandler(async (req, res) => {
-  const borrowing = await Borrowing.findById(req.params.id);
+  try {
+    const borrowing = await Borrowing.findById(req.params.id);
 
-  const { userId, bookId, email, refId, issueDate } = borrowing;
+    if (!borrowing) {
+      res.status(400).json({ message: "borrowing not found" });
+      throw new Error();
+    }
 
-  const returnDate = new Date();
+    await borrowing.deleteOne();
 
-  if (!borrowing) {
-    res.status(400);
-    throw new Error("borrowing not found");
+    res.status(200).json(req.params.id);
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong, try again" });
+    throw error;
   }
-
-  await borrowing.deleteOne();
-
-  await PastBorrowing.create({
-    userId,
-    bookId,
-    email,
-    refId,
-    issueDate,
-    returnDate,
-  });
-
-  res.status(200).json(req.params.id);
 });
 
 module.exports = {
   createBorrowing,
-  getBorrowing,
   getAllBorrowings,
   renewBorrowing,
   receiveBorrowing,

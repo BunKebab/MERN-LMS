@@ -15,6 +15,5 @@ export const store = configureStore({
     members: memberSlice,
     borrowings: borrowingSlice,
     requests: requestSlice,
-    pastBorrowings: pastBorrowingSlice
   },
 });

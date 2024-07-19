@@ -4,7 +4,6 @@ const router = express.Router()
 //controllers
 const {
     createBook,
-    getBook,
     getAllBooks,
     updateBook,
     deleteBook
@@ -17,6 +16,6 @@ const {
 } = require("../middleware/authMiddleware")
 
 router.route("/").post(protect, adminOnly, createBook).get(protect, getAllBooks)
-router.route("/:id").get(getBook).put(protect, adminOnly, updateBook).delete(protect, adminOnly, deleteBook)
+router.route("/:id").put(protect, adminOnly, updateBook).delete(protect, adminOnly, deleteBook)
 
 module.exports = router

@@ -11,83 +11,98 @@ const generateToken = (id) => {
 
 //upates a user's password (put:id)
 const updatePassword = asyncHandler(async (req, res) => {
-    const {
-        currentPassword,
-        newPassword
-    } = req.body
-
-    const user = await User.findById(req.params.id)
-
-    if (!user) {
-        res.status(400)
-        throw new Error("user not found")
+    try {
+        const {
+            currentPassword,
+            newPassword
+        } = req.body
+    
+        const user = await User.findById(req.params.id)
+    
+        if (!user) {
+            res.status(400).json({message: "user not found"})
+            throw new Error
+        }
+    
+        const isMatch = await user.comparePassword(currentPassword)
+    
+        if (!isMatch) {
+            res.status(400).json({message: "incorrect current pasword"})
+            throw new Error
+        }
+    
+        const salt = await bcrypt.genSalt(10)
+        const hashedPassword = await bcrypt.hash(newPassword, salt)
+    
+        const updatedUser = await User.findByIdAndUpdate(req.params.id, {password: hashedPassword})
+    
+        res.status(200).json(updatedUser)
+    } catch (error) {
+        res.status(500).json({message: "something went wrong, try again later"})
+        throw error
     }
-
-    const isMatch = await user.comparePassword(currentPassword)
-
-    if (!isMatch) {
-        res.status(400)
-        throw new Error("incorrect current pasword")
-    }
-
-    const salt = await bcrypt.genSalt(10)
-    const hashedPassword = await bcrypt.hash(newPassword, salt)
-
-    const updatedUser = await User.findByIdAndUpdate(req.params.id, {password: hashedPassword})
-
-    res.status(200).json(updatedUser)
 })
 
 //fetches logged in user (get)(protected)
 const getMe = asyncHandler(async (req, res) => {
-    const {
-        _id,
-        name,
-        email,
-        role
-    } = await User.findById(req.user.id)
-
-    res.status(200).json({
-        id: _id,
-        name,
-        email,
-        role
-    })
+    try {
+        const {
+            _id,
+            name,
+            email,
+            role
+        } = await User.findById(req.user.id)
+    
+        res.status(200).json({
+            id: _id,
+            name,
+            email,
+            role
+        })
+    } catch (error) {
+        res.status(500).json({message: "something went wrong, try again later"})
+        throw error
+    }
 })
 
 //logs in a user (post)
 const loginUser = asyncHandler(async (req, res) => {
-    const {
-        email,
-        password
-    } = req.body
-
-    if (!email || !password) {
-        res.status(400)
-        throw new Error("please enter credentials")
+    try {
+        const {
+            email,
+            password
+        } = req.body
+    
+        if (!email || !password) {
+            res.status(400).json({message: "please enter credentials"})
+            throw new Error
+        }
+    
+        const user = await User.findOne({email})
+    
+        if (!user) {
+            res.status(400).json({message: "user not found"})
+            throw new Error
+        }
+    
+        const passMatch = await user.comparePassword(password)
+    
+        if (!passMatch) {
+            res.status(400).json({message: "incorrect password"})
+            throw new Error
+        }
+    
+        res.status(200).json({
+            id: user._id,
+            email: user.email,
+            name: user.name,
+            role: user.role,
+            token: generateToken(user._id)
+        })
+    } catch (error) {
+        res.status(500).json({message: "something went wrong, try again later"})
+        throw error
     }
-
-    const user = await User.findOne({email})
-
-    if (!user) {
-        res.status(400)
-        throw new Error("user not found")
-    }
-
-    const passMatch = await user.comparePassword(password)
-
-    if (!passMatch) {
-        res.status(400)
-        throw new Error("incorrect password")
-    }
-
-    res.status(200).json({
-        id: user._id,
-        email: user.email,
-        name: user.name,
-        role: user.role,
-        token: generateToken(user._id)
-    })
 })
 
 module.exports= {

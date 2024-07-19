@@ -24,7 +24,6 @@ app.use("/api/users", require("./routes/userRoutes"))
 app.use("/api/auth", require("./routes/authRoutes"))
 app.use("/api/borrowings", require("./routes/borrowingRoutes"))
 app.use("/api/requests", require("./routes/requestRoutes"))
-app.use("/api/past-borrowings", require("./routes/pastBorrowingRoutes"))
 
 /* Serve frontend
 if (process.env.NODE_ENV === 'production') {

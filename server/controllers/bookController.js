@@ -1,87 +1,88 @@
-const asyncHandler = require("express-async-handler")
-const Book = require("../models/bookModel")
+const asyncHandler = require("express-async-handler");
+const Book = require("../models/bookModel");
 
 //create a book record (post)
 const createBook = asyncHandler(async (req, res) => {
-    const {
-        title,
-        author,
-        category,
-        isbn,
-        refId
-    } = req.body
+  try {
+    const { title, author, category, isbn, refId } = req.body;
 
     if (!title || !author || !category || !isbn || !refId) {
-        res.status(400)
-        throw new Error("please fill all text fields")
+      res.status(400).json({ message: "please fill all fields" });
+      throw new Error();
     }
 
     const book = await Book.create({
-        title,
-        author,
-        category,
-        isbn,
-        refId
-    })
-    res.status(200).json(book)
-})
-
-//fetches a book record (get:id)
-const getBook = asyncHandler(async (req, res) => {
-    const book = await Book.findById(req.params.id)
-
-    if (!book) {
-        res.status(400)
-        throw new Error("book not found")
-    }
-
-    res.status(200).json(book)
-})
+      title,
+      author,
+      category,
+      isbn,
+      refId,
+    });
+    res.status(200).json(book);
+  } catch (error) {
+    res.status(500).json("somthing went wrong, try again");
+    throw error;
+  }
+});
 
 //fetches all book records (get)
 const getAllBooks = asyncHandler(async (req, res) => {
-    const books = await Book.find()
+  try {
+    const books = await Book.find();
 
     if (!books) {
-        res.status(400)
-        throw new Error("no books found")
+      res.status(400).json({ message: "no books found" });
+      throw new Error();
     }
-    
-    res.status(200).json(books)
-})
+
+    res.status(200).json(books);
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong, try again" });
+    throw error;
+  }
+});
 
 //updates a book record (put:id)
 const updateBook = asyncHandler(async (req, res) => {
-    const book = await Book.findById(req.params.id)
+  try {
+    const book = await Book.findById(req.params.id);
 
     if (!book) {
-        res.status(400)
-        throw new Error("book not found")
+      res.status(400).json({ message: "book not found" });
+      throw new Error();
     }
 
     const updatedBook = await Book.findByIdAndUpdate(req.params.id, req.body, {
-        new: true
-    })
-    res.status(200).json(updatedBook)
-})
+      new: true,
+    });
+    res.status(200).json(updatedBook);
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong, try again" });
+    throw error;
+  }
+});
 
 //deletes a book record (delete:id)
 const deleteBook = asyncHandler(async (req, res) => {
-    const book = await Book.findById(req.params.id)
+  try {
+    const book = await Book.findById(req.params.id);
 
     if (!book) {
-        res.status(400)
-        throw new Error("book not found")
+      res.status(400).json({ message: "book not found" });
+      throw new Error();
     }
 
-    await book.deleteOne()
-    res.json(req.params.id)
-})
+    await book.deleteOne();
+    res.json(req.params.id);
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong, try again" });
+    throw error;
+  }
+});
 
 module.exports = {
-    createBook,
-    getBook,
-    getAllBooks,
-    updateBook,
-    deleteBook
-}
+  createBook,
+  getAllBooks,
+  updateBook,
+  deleteBook,
+};
