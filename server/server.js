@@ -26,7 +26,7 @@ app.use("/api/borrowings", require("./routes/borrowingRoutes"))
 app.use("/api/requests", require("./routes/requestRoutes"))
 app.use("/api/past-borrowings", require("./routes/pastBorrowingRoutes"))
 
-// Serve frontend
+/* Serve frontend
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '../client/dist')));
   
@@ -38,6 +38,7 @@ if (process.env.NODE_ENV === 'production') {
   } else {
     app.get('/', (req, res) => res.send('Please set to production'));
   }
+*/
 
 //connecting to port
 app.listen(Port)
