@@ -4,7 +4,7 @@
   "description": "Library management system using MERN stack",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon api/index.js"
   },
   "author": "Sushi",
   "license": "ISC",

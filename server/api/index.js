@@ -2,8 +2,7 @@ const express = require("express")
 const dotenv = require("dotenv").config()
 const router = express.Router()
 const cors = require("cors")
-const connect = require("./config/db")
-const path = require("path")
+const connect = require("../config/db")
 const Port = process.env.PORT
 
 //running connection
@@ -19,11 +18,11 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-app.use("/api/books", require("./routes/bookRoutes"))
-app.use("/api/users", require("./routes/userRoutes"))
-app.use("/api/auth", require("./routes/authRoutes"))
-app.use("/api/borrowings", require("./routes/borrowingRoutes"))
-app.use("/api/requests", require("./routes/requestRoutes"))
+app.use("/api/books", require("../routes/bookRoutes"))
+app.use("/api/users", require("../routes/userRoutes"))
+app.use("/api/auth", require("../routes/authRoutes"))
+app.use("/api/borrowings", require("../routes/borrowingRoutes"))
+app.use("/api/requests", require("../routes/requestRoutes"))
 
 //connecting to port
 app.listen(Port)
