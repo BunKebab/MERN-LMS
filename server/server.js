@@ -25,20 +25,6 @@ app.use("/api/auth", require("./routes/authRoutes"))
 app.use("/api/borrowings", require("./routes/borrowingRoutes"))
 app.use("/api/requests", require("./routes/requestRoutes"))
 
-/* Serve frontend
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, '../client/dist')));
-  
-    app.get('*', (req, res) =>
-      res.sendFile(
-        path.resolve(__dirname, '../', 'client', 'dist', 'index.html')
-      )
-    );
-  } else {
-    app.get('/', (req, res) => res.send('Please set to production'));
-  }
-*/
-
 //connecting to port
 app.listen(Port)
 console.log(`listening to port: ${Port}`)
